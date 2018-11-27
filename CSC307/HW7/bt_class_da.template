@@ -1,0 +1,158 @@
+#include "bt_class_da.h"
+
+namespace main_savitch_chapter10DA {
+
+
+template <class Item>
+binary_tree<Item>::binary_tree(const binary_tree<Item>& source) {
+
+	num_nodes = source.num_nodes;
+	current_node = source.current_node;
+	capacity = source.capacity;
+
+	data = new Item[capacity];
+	is_present = new bool[capacity];
+
+	for(int i = 0; i <= num_nodes; i++) {
+		data[i] = source.data[i];
+		is_present[i] = source.is_present[i];		
+	}
+
+} //end of binary_tree(const binary_tree<Item>& source) function
+
+template <class Item>
+binary_tree<Item>::~binary_tree() {
+	delete[] data;
+	delete[] is_present;
+}
+
+template <class Item>
+void binary_tree<Item>::operator=(const binary_tree<Item>& source) {
+	
+	if (this == &source) { return; }
+	if (capacity != source.capacity) {
+		Item* tmp_data = new Item[source.capacity];
+		bool* tmp_present = new bool[source.capacity];
+		for(int i = 0; i < num_nodes; i++) { tmp_present[i] = false; }
+		data = tmp_data;
+		is_present = tmp_present;
+		capacity = source.capacity;
+	}
+
+	for(int i = 0; i <= source.num_nodes; i++) {
+		data[i] = source.data[i];
+		is_present[i] = source.is_present[i];
+	}
+
+	//std::copy(source.data, source.data+source.num_nodes, data);
+	//std::copy(source.is_present, source.is_present + source.num_nodes, is_present);
+	num_nodes = source.num_nodes;
+	//current_node = source.current_node;
+}
+
+template <class Item>
+void binary_tree<Item>::create_first_node(const Item& entry){
+	assert(size() == 0);
+	data[0] = entry;
+	is_present[0] = true;
+	num_nodes++;
+	current_node = 0;
+}
+
+template <class Item>
+void binary_tree<Item>::shift_to_root(){
+	assert(size() > 0);
+	current_node = 0;
+}
+
+template <class Item>
+void binary_tree<Item>::shift_up(){
+	if(current_node == 0) { return; }
+	assert(has_parent());
+	current_node = (int)floor((current_node-1)/2);
+}
+
+template <class Item>
+void binary_tree<Item>::shift_left() {
+	if (!has_left_child()) { return; }
+	assert(has_left_child());
+	current_node = 2 * current_node + 1;
+}
+
+template <class Item>
+void binary_tree<Item>::shift_right() {
+	if(!has_right_child()) { return; }
+	assert(has_right_child());
+	current_node = 2 * current_node + 2;
+}
+
+template <class Item>
+void binary_tree<Item>::change(const Item& new_entry) {
+	assert(size() > 0);
+	data[current_node] = new_entry;
+}
+
+template <class Item>
+void binary_tree<Item>::add_left(const Item& entry) {
+	if (2*current_node + 1 >= capacity) { reserve(2*current_node+2); }
+	if (has_left_child()) { return; }
+	data[2*current_node+1] = entry;
+	is_present[2*current_node+1] = true;
+	num_nodes++;
+}
+
+template <class Item>
+void binary_tree<Item>::add_right(const Item& entry){
+	if (2*current_node+2 >= capacity) { reserve(2*current_node+3); }
+	if (has_right_child()) { return; }
+	data[2*current_node+2] = entry;
+	is_present[2*current_node+2] = true;
+	num_nodes++;
+}
+
+template <class Item>
+void binary_tree<Item>::reserve(std::size_t new_capacity){
+
+	Item* tmp_data = new Item[new_capacity];
+	bool* tmp_present = new bool[new_capacity];
+	
+	for(int i = 0; i < new_capacity; i++) { tmp_present[i] = false; if( i < capacity) {
+		tmp_data[i] = data[i]; 
+		tmp_present[i] = is_present[i]; 
+		}
+	}	
+	capacity = new_capacity;
+	//std::copy(data, data + num_nodes, tmp_data);
+	//std::copy(is_present, is_present + num_nodes, tmp_present);
+	data = tmp_data;
+	is_present = tmp_present;
+}
+
+template <class Item>
+Item binary_tree<Item>::retrieve() const {
+	return data[current_node];
+}
+
+template <class Item>
+bool binary_tree<Item>::has_parent() const {
+	if(current_node == 0) { return false; }
+	return (is_present[(int)floor((current_node-1)/2)]);
+}	
+
+template <class Item>
+bool binary_tree<Item>::has_right_child() const {
+	if (2*current_node+2 >= capacity) { return false; }
+	
+	return is_present[2*current_node+2];
+}
+
+
+template <class Item>
+bool binary_tree<Item>::has_left_child() const {
+	if (2*current_node+1 >= capacity) { return false; }
+	
+	return is_present[2*current_node+1];
+}
+
+
+} //end of namespace

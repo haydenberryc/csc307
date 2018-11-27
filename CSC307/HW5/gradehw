@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f node2.h node2.template stack1.h stack1.template stack2.h stack2.template hw5grade.cpp *.o hwout 
+echo "Copying node2.h node2.template stack1.h stack1.template stack2.h stack2.template hw5grade.cpp."
+cp /var/tmp/CSC307/HW5/hw5grade.cpp ./
+cp /var/tmp/CSC307/HW5/*.h ./
+cp /var/tmp/CSC307/HW5/*.template ./
+echo "Compiling..."
+g++ -Wall -c -std=c++11 hw5grade.cpp
+g++ *.o -o hwout 
+./hwout

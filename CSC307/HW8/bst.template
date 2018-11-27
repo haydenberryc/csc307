@@ -1,0 +1,133 @@
+namespace main_savitch_10
+{
+	template<class Item>
+	bst<Item>::bst(const bst<Item>& source)
+	{
+		root_ptr = tree_copy(source.root_ptr);
+	}
+
+	template<class Item>
+	bst<Item>::~bst()
+	{
+		tree_clear(root_ptr);
+	}
+
+	template<class Item>
+	void bst<Item>::operator=(const bst<Item>& source)
+	{
+		root_ptr = tree_copy(source.root_ptr);
+	}
+
+	template<class Item>
+	void bst<Item>::insert(const Item & entry)
+	{
+			binary_tree_node<Item> *temp = new binary_tree_node<Item>(entry);
+			if(root_ptr == NULL)
+			{
+			root_ptr = temp;
+			return;
+			}
+			binary_tree_node<Item> *cursor = root_ptr;
+		
+		
+			while(cursor!=NULL)
+			{
+				if (entry == cursor->data())
+					return;
+				if(entry < cursor->data())
+				{
+					if(cursor->left() != NULL)
+						cursor=cursor->left();
+					else
+					{
+						cursor->set_left(temp);
+						return;
+					}
+				}
+				else if(entry > cursor->data())
+				{
+					if(cursor->right() != NULL)
+						cursor=cursor->right();
+					else
+					{
+						cursor->set_right(temp);
+						return;
+					}
+				}
+			}
+	}
+
+	template <class Item>
+	void bst<Item>::remove_max(binary_tree_node<Item>*& root_ptr, Item& removed)
+	{
+	     binary_tree_node <Item> *oldr;
+		if(root_ptr == NULL)
+        {
+            return;
+        }
+        else if(root_ptr -> right()== NULL)
+        {
+            removed = root_ptr -> data();
+            oldr = root_ptr;
+            root_ptr = root_ptr -> left();
+            delete oldr;
+        }
+        else
+        {
+            remove_max(root_ptr -> right(), removed);
+        }
+
+	}
+
+	template<class Item>
+	bool bst<Item>::remove(binary_tree_node<Item>*& root_ptr, const Item & target)
+	{
+		binary_tree_node<Item>* oldr;
+	    
+	    if (root_ptr == NULL)
+			return false;
+	   
+
+	    if (target < root_ptr->data( ))
+			return remove(root_ptr->left( ), target);
+
+	    if (target > root_ptr->data( ))
+			return remove(root_ptr->right( ), target);
+	    
+	    if (root_ptr->left( ) == NULL)
+	    {
+			oldr = root_ptr;
+			root_ptr = root_ptr->right( );
+			delete oldr;
+			return true;
+	    }
+	    
+	    remove_max(root_ptr->left( ), root_ptr->data( ));
+	    return true;
+	}
+
+	
+	template<class Item>
+	void makelist(node<Item>*& head_ptr, node<Item>*& tail_ptr, binary_tree_node<Item>* r)
+	{
+		
+		if(r->left() != NULL)
+			makelist(head_ptr,tail_ptr,r->left());
+		if(head_ptr == NULL){
+				head_ptr = new node<Item>(r->data(), tail_ptr);
+				tail_ptr = head_ptr;
+			}
+		else{
+			node<Item> *newNode = new node<Item>(r->data());
+			tail_ptr->set_link(newNode);
+			tail_ptr = tail_ptr->link();
+		}
+		if(r->right() == NULL)
+			return;
+		makelist(head_ptr,tail_ptr,r->right());
+	
+	
+	}
+	
+
+}

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f bt_class_da.h hw7grade.cpp *.o hwout
+echo "Copying bt_class_da.h hw7grade.cpp."
+cp /var/tmp/CSC307/HW7/hw7grade.cpp ./
+cp /var/tmp/CSC307/HW7/*.h ./
+echo "Compiling..."
+g++ -c -std=c++11 hw7grade.cpp
+g++ *.o -o hwout
+./hwout

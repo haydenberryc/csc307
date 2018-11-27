@@ -1,0 +1,47 @@
+#include "stack2.h"
+
+template <class Item>
+void main_savitch_7B::stack<Item>::swap(stack<Item>& s){
+stack<Item> temp1, temp2;
+
+while(!empty()){
+	temp1.push(top());
+	pop();
+}
+
+while(!s.empty()){
+	temp2.push(s.top());
+	s.pop();
+}
+
+while(!temp1.empty()){
+	s.push(temp1.top());
+	temp1.pop();
+}
+
+
+while(!temp2.empty()){
+	push(temp2.top());
+	temp2.pop();
+}
+
+}
+
+template <class Item>
+void main_savitch_7B::stack<Item>::flip(){
+stack<Item> temp1, temp2;
+
+while(!empty()){
+	temp1.push(top());
+	pop();	
+}
+while(!temp1.empty()){
+	temp2.push(temp1.top());
+	temp1.pop();	
+}
+
+while(!temp2.empty()){
+	push(temp2.top());
+	temp2.pop();
+}
+}

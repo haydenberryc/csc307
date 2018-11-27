@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f table1d.h table1q.h hw10grade.cpp *.o hwout
+echo "Copying table1d.h table1q.h hw10grade.cpp."
+cp /var/tmp/CSC307/HW10/hw10grade.cpp ./
+cp /var/tmp/CSC307/HW10/*.h ./
+echo "Compiling..."
+g++ -c -std=c++14 hw10grade.cpp
+g++ *.o -o hwout
+./hwout

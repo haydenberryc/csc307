@@ -1,0 +1,50 @@
+#include "stack1.h"
+
+template <class Item>
+void main_savitch_7A::stack<Item>::swap(stack<Item>& s){
+stack<Item> temp1, temp2;
+
+
+while(!empty()){
+	temp1.push(top());
+	pop();
+}
+
+while(!s.empty()){
+	temp2.push(s.top());
+	s.pop();
+}
+
+while(!temp1.empty()){
+	s.push(temp1.top());
+	temp1.pop();
+}
+
+
+while(!temp2.empty()){
+	push(temp2.top());
+	temp2.pop();
+}
+
+}
+
+template <class Item>
+void main_savitch_7A::stack<Item>::flip(){
+stack<Item> temp1, temp2;
+
+if(size() == 0) { return; }
+
+while(size() > 0){
+	temp1.push(top());
+	pop();	
+}
+while(temp1.size() > 0){
+	temp2.push(temp1.top());
+	temp1.pop();	
+}
+
+while(temp2.size() > 0){
+	push(temp2.top());
+	temp2.pop();
+}
+}

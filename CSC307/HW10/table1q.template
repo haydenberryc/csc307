@@ -1,0 +1,76 @@
+        #include "table1d.h"
+		namespace main_savitch_12A_QH {
+			template <class RecordType, size_t TABLE_SIZE>
+			table<RecordType, TABLE_SIZE>::table() {
+				used = 0;
+				for (std::size_t i = 0; i < TABLE_SIZE; ++i) { data[i].key = NEVER_USED; }
+			}
+		
+			template <class RecordType, size_t TABLE_SIZE>
+			void table<RecordType, TABLE_SIZE>::insert(const RecordType& entry) {
+				bool already_present;
+				std::size_t index;
+
+				assert(entry.key >= 0);
+				find_index(entry.key, already_present, index);
+
+				if (!already_present)
+				{
+					assert(size( ) < TABLE_SIZE);
+					index = hash(entry.key);
+					while (!is_vacant(index)) { index = next_index(index); }
+					++used;
+				}
+				
+			}
+			
+			template <class RecordType, size_t TABLE_SIZE>		
+			void table<RecordType, TABLE_SIZE>::remove(int key) {
+				bool found;
+				std::size_t index;
+
+				assert(key >= 0);
+
+				find_index(key, found, index);
+				if (found) {
+					data[index].key = PREVIOUSLY_USED;
+					--used;
+				}
+			}
+			
+			template <class RecordType, size_t TABLE_SIZE>
+			bool table<RecordType, TABLE_SIZE>::is_present(int key) {
+				bool found;
+				std::size_t index;
+				assert(key >= 0);
+				find_index(key, found, index);
+				return found;
+			}
+		
+			template <class RecordType, size_t TABLE_SIZE>
+			bool table<RecordType, TABLE_SIZE>::is_vacant(std::size_t index) const {
+				return (data[index].key == NEVER_USED) || (data[index].key == PREVIOUSLY_USED);
+			}
+		
+			template <class RecordType, size_t TABLE_SIZE>
+			void table<RecordType, TABLE_SIZE>::find(int key, bool& found, RecordType& result) const {
+				std::size_t index;
+				assert(key >= 0);
+				find_index(key, found, index);
+				if (found) { result = data[index]; }
+			}
+		
+			template <class RecordType, size_t TABLE_SIZE>
+			void table<RecordType, TABLE_SIZE>::find_index(int key, bool& found, std::size_t& index) {
+				std::size_t count = 0;
+				index = hash(key);
+				while((count < TABLE_SIZE) && (data[index].key != NEVER_USED) && (data[index].key != key)) {
+					count++;
+					index = next_index(index);
+				}
+				found = (data[index].key == key);
+			}
+			
+			template <class RecordType,size_t TABLE_SIZE>
+			std::size_t table<RecordType, TABLE_SIZE>::next_index(std::size_t index) { return ((index+1) % TABLE_SIZE); }
+		}

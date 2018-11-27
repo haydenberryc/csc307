@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f node1.h node1.cxx hw3grade.cpp *.o hwout 
+echo "Copying node1.h, node1.cxx, and hw3grade.cpp."
+cp /var/tmp/CSC307/HW3/node1.h ./
+cp /var/tmp/CSC307/HW3/node1.cxx ./
+cp /var/tmp/CSC307/HW3/hw3grade.cpp ./
+echo "Compiling..."
+g++ -Wall -c -std=c++11 node1.cxx node1hw3.cpp hw3grade.cpp
+g++ *.o -o hwout 
+./hwout

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f bag_with_receipts.h hw1grade.cpp *.o hwout 
+echo "Copying bag_with_receipts.h and hw1grade.cpp."
+cp /var/tmp/CSC307/HW1/bag_with_receipts.h ./
+cp /var/tmp/CSC307/HW1/hw1grade.cpp ./
+echo "Compiling..."
+g++ -Wall -c bag_with_receipts.cpp hw1grade.cpp
+g++ *.o -o hwout 
+./hwout

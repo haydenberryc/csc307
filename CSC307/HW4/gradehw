@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f hw4grade.cpp *.o hwout 
+echo "Copying hw4grade.cpp."
+cp /var/tmp/CSC307/HW4/hw4grade.cpp ./
+echo "Compiling..."
+g++ -Wall -c -std=c++11 hw4grade.cpp
+g++ *.o -o hwout 
+./hwout

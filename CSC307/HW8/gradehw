@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f bintree.h bintree.template bst.h node3.h hw8grade.cpp *.o hwout
+echo "Copying bintree.h bintree.template bst.h node3.h hw8grade.cpp."
+cp /var/tmp/CSC307/HW8/hw8grade.cpp ./
+cp /var/tmp/CSC307/HW8/*.h ./
+cp /var/tmp/CSC307/HW8/bintree.template ./bintree.template
+echo "Compiling..."
+g++ -c -std=c++14 hw8grade.cpp
+g++ *.o -o hwout
+./hwout

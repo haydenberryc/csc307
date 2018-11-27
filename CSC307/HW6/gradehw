@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Removing (previous) files."
+/bin/rm -f node2.h node2.template queue2circularLL.h hw6grade.cpp *.o hwout 
+echo "Copying node2.h node2.template queue2circularLL.h hw6grade.cpp."
+cp /var/tmp/CSC307/HW6/hw6grade.cpp ./
+cp /var/tmp/CSC307/HW6/*.h ./
+cp /var/tmp/CSC307/HW6/*.template ./
+echo "Compiling..."
+g++ -c -std=c++11 hw6grade.cpp
+g++ *.o -o hwout 
+./hwout

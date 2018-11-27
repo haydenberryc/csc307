@@ -1,0 +1,46 @@
+#include "bag_with_receipts.h"
+#include <iostream>
+using namespace main_savitch_3;
+
+template <class X>
+bag_with_receipts<X>::bag_with_receipts()
+{
+	
+	for(size_t i = 0; i < CAPACITY;i++){
+		in_use[i] = false;
+
+	}
+		used = 0;
+}
+
+template <class X>
+bool bag_with_receipts<X>::remove(int receipt, value_type& itemRemoved)
+{
+	if(in_use[receipt] == true) {
+		itemRemoved = data[receipt];
+		//data[receipt];
+		in_use[receipt] = false;
+		used--;
+		return true;
+	}
+	else return false;
+}
+
+template <class X>
+std::size_t bag_with_receipts<X>::insert(const value_type& item){
+	if (size() < CAPACITY) {
+		size_t i = 0;
+		while (in_use[i] == true) { i++; }
+		data[i] = item;
+		in_use[i] = true;
+		used++;
+		return i;
+	} else {
+	return 0;
+	}	
+}
+
+template <class X>
+std::ostream& operator<<(std::ostream& os, const bag_with_receipts<X>& b){
+	return os;
+}

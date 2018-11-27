@@ -1,0 +1,79 @@
+#include "queue2circularLL.h"
+using namespace main_savitch_6B;
+namespace main_savitch_8CLL {
+
+template <class Item>
+queue<Item>::queue() {
+	rear_ptr = new main_savitch_6B::node<Item>();
+    rear_ptr->set_link(rear_ptr);
+    count = 0;
+}
+
+template <class Item>
+queue<Item>::queue(const queue<Item>& source) {
+    count = source.count;
+	rear_ptr = new node<Item>();
+    rear_ptr->set_link(rear_ptr);
+
+    node<Item>*shead_ptr = source.rear_ptr->link();
+    node<Item>*head_ptr = rear_ptr->link();
+    source.rear_ptr->set_link(NULL);
+    rear_ptr->set_link(NULL);
+    list_copy(shead_ptr, head_ptr,rear_ptr);
+    source.rear_ptr->set_link(shead_ptr);
+    rear_ptr->set_link(head_ptr);
+
+}
+
+template <class Item>
+queue<Item>::~queue() {
+	main_savitch_6B::node<Item>* head_ptr = rear_ptr->link();
+	rear_ptr->set_link(NULL);
+	main_savitch_6B::list_clear(head_ptr);
+}
+
+template <class Item>
+void queue<Item>::operator=(const queue<Item>& source) {
+    if(this == &source) { return; }
+    count = source.count;
+    
+    node<Item>*s_head_ptr = source.rear_ptr->link();
+    node<Item>*head_ptr = rear_ptr->link();
+    source.rear_ptr->set_link(NULL);
+    rear_ptr->set_link(NULL);
+    list_copy(s_head_ptr,head_ptr,rear_ptr);
+    source.rear_ptr->set_link(s_head_ptr);
+    rear_ptr->set_link(head_ptr);
+}
+
+template <class Item>
+void queue<Item>::pop() {
+	assert(!empty());
+	if(count > 1) { list_remove(rear_ptr); }
+	else { rear_ptr->set_data(Item()); rear_ptr->set_link(rear_ptr); }
+	count--;
+}
+
+template <class Item>
+void queue<Item>::push(const Item& entry) {
+	if(empty()) {
+		//main_savitch_6B::node<Item>* head_ptr;
+		main_savitch_6B::list_head_insert(rear_ptr, entry);
+		rear_ptr->set_link(rear_ptr);
+	}
+	else {
+		main_savitch_6B::node<Item>* head_ptr = rear_ptr->link();
+		main_savitch_6B::list_insert(rear_ptr, entry);
+		rear_ptr = rear_ptr->link();
+		rear_ptr->set_link(head_ptr);
+	}
+	count++;
+}
+
+template <class Item>
+Item& queue<Item>::front() {
+	assert(!empty());
+	main_savitch_6B::node<Item>* head_ptr = rear_ptr->link();
+	return rear_ptr->link()->data();
+}
+}
